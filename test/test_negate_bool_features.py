@@ -20,6 +20,7 @@ class Test_negate_bool_features(unittest.TestCase):
         C = negate_bool_features(A, negate)
         npt.assert_array_equal(B, C.astype(int))
 
+
 # run
 if __name__ == '__main__':
     unittest.main()
