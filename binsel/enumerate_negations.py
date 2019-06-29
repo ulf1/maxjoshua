@@ -17,4 +17,4 @@ def enumerate_negations(X, y):
             best_neg = negate
             best_rho = rho
 
-    return best_neg
+    return best_neg, best_rho
