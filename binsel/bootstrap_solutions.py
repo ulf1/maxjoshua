@@ -61,3 +61,18 @@ def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
         return np.unique(solutions, axis=0)
     else:
         return solutions
+
+
+def bootstrap_solutions(X, y=None, n_select=5, max_rho=0.4, preselect=None,
+                        n_draws=50, subsample=0.7, replace=False,
+                        random_state=42, unique=True):
+    if preselect and y is not None:
+        return bootstrap_solutions_pre(
+            X, y, n_select=n_select, max_rho=max_rho, preselect=preselect,
+            n_draws=n_draws, subsample=subsample, replace=replace,
+            random_state=random_state, unique=unique)
+    else:
+        return bootstrap_solutions_all(
+            X, n_select=n_select, max_rho=max_rho,
+            n_draws=n_draws, subsample=subsample, replace=replace,
+            random_state=random_state, unique=unique)
