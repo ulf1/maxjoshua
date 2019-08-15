@@ -7,8 +7,8 @@ def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
                             unique=True):
     # compute all Matthew's correlations between (Xi,Xj)
     rho3, _, oob = bootcorr(X, n_draws=n_draws, subsample=subsample,
-                       replace=replace, random_state=random_state,
-                       corr_fn=mcc)
+                            replace=replace, random_state=random_state,
+                            corr_fn=mcc)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
@@ -38,8 +38,8 @@ def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
 
     # compute all Matthew's correlations between (y,X) and (Xi,Xj)
     rho3, _, oob = bootcorr(np.c_[y, X], n_draws=n_draws, subsample=subsample,
-                       replace=replace, random_state=random_state,
-                       corr_fn=mcc)
+                            replace=replace, random_state=random_state,
+                            corr_fn=mcc)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list

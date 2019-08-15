@@ -7,7 +7,7 @@ def hard_voting(X):
         X = np.array(X)
 
     # return vector directly
-    if len(X.shape) is 1:
+    if len(X.shape) == 1:
         return X > 0
     else:
         # majority vote
