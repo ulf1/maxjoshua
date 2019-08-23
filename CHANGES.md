@@ -1,3 +1,8 @@
+# 0.2.0 / 2019-08-23
+
+  * BinSel class added
+  * verbose flag added to binsel_hardvote
+
 # 0.1.2 / 2019-08-15
 
   * flake8 fixes
