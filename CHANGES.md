@@ -1,3 +1,7 @@
+# 0.2.1 / 2019-08-23
+
+  * requirements fixed
+  
 # 0.2.0 / 2019-08-23
 
   * BinSel class added

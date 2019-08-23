@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(name='binsel',
-      version='0.2.0',
+      version='0.2.1',
       description='Feature selection for Hard Voting classifier',
       long_description=read('README.md'),
       long_description_content_type='text/markdown',
@@ -19,7 +19,8 @@ setup(name='binsel',
       install_requires=[
           'setuptools>=40.0.0',
           'nose>=1.3.7',
-          'korr>=0.8.2'
+          'korr>=0.8.2',
+          'scikit-learn>=0.20.0'
       ],
       python_requires='>=3.6',
       zip_safe=False)
