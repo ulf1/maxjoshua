@@ -8,13 +8,15 @@ from korr import confusion, confusion_to_mcc
 
 def binsel_hardvote(X, y, n_select=5, max_rho=0.4, preselect=None,
                     n_draws=50, subsample=0.7, replace=False,
-                    random_state=42, unique=True, oob_score=True):
+                    random_state=42, unique=True, oob_score=True,
+                    verbose=False):
     # bootstrap some possible solutions
     solutions, oob = bootstrap_solutions(
         X, y=y, n_select=n_select, max_rho=max_rho,
         preselect=preselect, n_draws=n_draws,
         subsample=subsample, replace=replace,
-        random_state=random_state, unique=unique)
+        random_state=random_state, unique=unique,
+        verbose=verbose)
 
     # find best way to negate features and store evaluation
     results = []

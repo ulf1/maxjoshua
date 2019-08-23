@@ -4,7 +4,7 @@ from korr import bootcorr, mcc, mincorr
 
 def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
                             subsample=0.7, replace=False, random_state=42,
-                            unique=True):
+                            unique=True, verbose=False):
     # compute all Matthew's correlations between (Xi,Xj)
     rho3, _, oob = bootcorr(X, n_draws=n_draws, subsample=subsample,
                             replace=replace, random_state=random_state,
@@ -13,7 +13,9 @@ def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
     for cmat in rho3:
-        idxlo = mincorr(cmat, n_stop=n_select, max_rho=max_rho)
+        idxlo = mincorr(
+            cmat, n_stop=n_select, max_rho=max_rho,
+            verbose=verbose)
         solutions.append(sorted(idxlo))
 
     # done
@@ -26,7 +28,7 @@ def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
 
 def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
                             n_draws=50, subsample=0.7, replace=False,
-                            random_state=42, unique=True):
+                            random_state=42, unique=True, verbose=False):
     # convert to number of features to preselect
     n_features = len(X[0])
     if isinstance(preselect, float):
@@ -51,7 +53,8 @@ def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
         idxlo = mincorr(
             cmat[:, idxft][idxft, :],
             n_stop=n_select,
-            max_rho=max_rho)
+            max_rho=max_rho,
+            verbose=verbose)
         # convert indicies back to 'X' matrix (not 'dat')
         idxlo = list(np.array(idxft[idxlo]) - 1)
         # save it
@@ -67,14 +70,14 @@ def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
 
 def bootstrap_solutions(X, y=None, n_select=5, max_rho=0.4, preselect=None,
                         n_draws=50, subsample=0.7, replace=False,
-                        random_state=42, unique=True):
+                        random_state=42, unique=True, verbose=False):
     if preselect and y is not None:
         return bootstrap_solutions_pre(
             X, y, n_select=n_select, max_rho=max_rho, preselect=preselect,
             n_draws=n_draws, subsample=subsample, replace=replace,
-            random_state=random_state, unique=unique)
+            random_state=random_state, unique=unique, verbose=verbose)
     else:
         return bootstrap_solutions_all(
             X, n_select=n_select, max_rho=max_rho,
             n_draws=n_draws, subsample=subsample, replace=replace,
-            random_state=random_state, unique=unique)
+            random_state=random_state, unique=unique, verbose=verbose)
