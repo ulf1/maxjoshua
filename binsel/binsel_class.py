@@ -2,6 +2,13 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from .binsel_hardvote import (
     binsel_hardvote, negate_bool_features, hard_voting)
 import numpy as np
+import warnings
+
+
+warnings.warn(
+    ("'BinSel' is deprecated and"
+     "will be moved to 'binsel-sklearn' package."),
+    DeprecationWarning, stacklevel=2)
 
 
 class BinSel(BaseEstimator, ClassifierMixin):
