@@ -23,7 +23,7 @@ pip install binsel
 
 
 ## Usage
-Check the [`binsel_hardvote` example](http://github.com/kmedian/binsel/examples/binsel_hardvote.ipynb) folder for notebooks.
+Check the [`binsel_hardvote` example](https://github.com/kmedian/binsel/blob/master/examples/binsel_hardvote.ipynb) folder for notebooks.
 
 
 ## Algorithm
