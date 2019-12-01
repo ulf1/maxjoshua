@@ -18,7 +18,7 @@ setup(name='binsel',
       packages=['binsel'],
       install_requires=[
           'setuptools>=40.0.0',
-          'nose>=1.3.7',
+          'numpy>=1.14.5',
           'korr>=0.8.2',
           'scikit-learn>=0.20.0'
       ],
