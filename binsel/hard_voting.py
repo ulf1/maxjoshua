@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def hard_voting(X):
+def hard_voting(X: np.array) -> np.array:
     # convert to numpy array
     if isinstance(X, (list, tuple)):
         X = np.array(X)

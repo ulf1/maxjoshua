@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(name='binsel',
-      version='0.2.1',
+      version='0.2.2',
       description='Feature selection for Hard Voting classifier',
       long_description=read('README.md'),
       long_description_content_type='text/markdown',

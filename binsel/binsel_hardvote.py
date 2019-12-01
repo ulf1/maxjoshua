@@ -6,10 +6,18 @@ from .hard_voting import hard_voting
 from korr import confusion, confusion_to_mcc
 
 
-def binsel_hardvote(X, y, n_select=5, max_rho=0.4, preselect=None,
-                    n_draws=50, subsample=0.7, replace=False,
-                    random_state=42, unique=True, oob_score=True,
-                    verbose=False):
+def binsel_hardvote(X: np.array,
+                    y: np.array,
+                    n_select: int = 5,
+                    max_rho: float = 0.4,
+                    preselect: float = None,
+                    n_draws: int = 50,
+                    subsample: float = 0.7,
+                    replace: bool = False,
+                    random_state: int = 42,
+                    unique: bool = True,
+                    oob_score: bool = True,
+                    verbose: bool = False) -> (list, list, float, list):
     # bootstrap some possible solutions
     solutions, oob = bootstrap_solutions(
         X, y=y, n_select=n_select, max_rho=max_rho,

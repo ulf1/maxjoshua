@@ -2,9 +2,15 @@ import numpy as np
 from korr import bootcorr, mcc, mincorr
 
 
-def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
-                            subsample=0.7, replace=False, random_state=42,
-                            unique=True, verbose=False):
+def bootstrap_solutions_all(X: np.array,
+                            n_select: int = 5,
+                            max_rho: float = 0.4,
+                            n_draws: int = 50,
+                            subsample: float = 0.7,
+                            replace: bool = False,
+                            random_state: int = 42,
+                            unique: bool = True,
+                            verbose: bool = False) -> (np.array, list):
     # compute all Matthew's correlations between (Xi,Xj)
     rho3, _, oob = bootcorr(X, n_draws=n_draws, subsample=subsample,
                             replace=replace, random_state=random_state,
@@ -26,9 +32,17 @@ def bootstrap_solutions_all(X, n_select=5, max_rho=0.4, n_draws=50,
         return solutions, oob
 
 
-def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
-                            n_draws=50, subsample=0.7, replace=False,
-                            random_state=42, unique=True, verbose=False):
+def bootstrap_solutions_pre(X: np.array,
+                            y: np.array,
+                            n_select: int = 5,
+                            max_rho: float = 0.4,
+                            preselect: float = 0.8,
+                            n_draws: int = 50,
+                            subsample: float = 0.7,
+                            replace: bool = False,
+                            random_state: int = 42,
+                            unique: bool = True,
+                            verbose: bool = False) -> (np.array, list):
     # convert to number of features to preselect
     n_features = len(X[0])
     if isinstance(preselect, float):
@@ -68,9 +82,17 @@ def bootstrap_solutions_pre(X, y, n_select=5, max_rho=0.4, preselect=0.8,
         return solutions, oob
 
 
-def bootstrap_solutions(X, y=None, n_select=5, max_rho=0.4, preselect=None,
-                        n_draws=50, subsample=0.7, replace=False,
-                        random_state=42, unique=True, verbose=False):
+def bootstrap_solutions(X: np.array,
+                        y: np.array = None,
+                        n_select: int = 5,
+                        max_rho: float = 0.4,
+                        preselect: float = None,
+                        n_draws: int = 50,
+                        subsample: float = 0.7,
+                        replace: bool = False,
+                        random_state: int = 42,
+                        unique: bool = True,
+                        verbose: bool = False) -> (np.array, list):
     if preselect and y is not None:
         return bootstrap_solutions_pre(
             X, y, n_select=n_select, max_rho=max_rho, preselect=preselect,

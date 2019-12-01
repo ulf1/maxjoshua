@@ -2,9 +2,10 @@ from itertools import product
 from .negate_bool_features import negate_bool_features
 from .hard_voting import hard_voting
 from korr import confusion, confusion_to_mcc
+import numpy as np
 
 
-def enumerate_negations(X, y):
+def enumerate_negations(X: np.array, y: np.array) -> (list, float):
     n_features = len(X[0])  # warning 15 => 32768 combinations!
 
     best_neg = None

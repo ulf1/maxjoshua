@@ -27,7 +27,7 @@ class BinSel(BaseEstimator, ClassifierMixin):
         self.oob_score = oob_score
         self.verbose = verbose
 
-    def fit(self, X, y, **fit_params):
+    def fit(self, X: np.array, y: np.array, **fit_params):
         self.idx, self.neg, self.rho, self.res = binsel_hardvote(
             X, y,
             n_select=self.n_select,
@@ -42,7 +42,7 @@ class BinSel(BaseEstimator, ClassifierMixin):
             verbose=self.verbose)
         return self
 
-    def predict_proba(self, X):
+    def predict_proba(self, X: np.array) -> np.array:
         """The average of all binary votes.
         Only makes sense for high n_select
         """
@@ -50,11 +50,11 @@ class BinSel(BaseEstimator, ClassifierMixin):
         y_proba = np.sum(X_tmp, axis=1) / self.n_select
         return np.c_[1 - y_proba, y_proba]
 
-    def predict(self, X):
+    def predict(self, X: np.array) -> np.array:
         X_tmp = negate_bool_features(X[:, self.idx], self.neg)
         y_vote = hard_voting(X_tmp)
         return y_vote
 
-    def score(self, X, y):
+    def score(self, X: np.array, y: np.array) -> np.array:
         y_pred = self.predict(X)
         return np.mean(y == y_pred)
