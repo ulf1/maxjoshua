@@ -47,12 +47,32 @@ The algorithm works as follows
 
 
 ## Commands
-* Check syntax: `flake8 --ignore=F401`
+Install a virtual environment
+
+```
+python3 -m venv .venv  # see note below
+source .venv/bin/activate
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
+pip3 install jupyterlab twine
+```
+
+(If your git repo is stored in a folder with whitespaces, then don't use the subfolder `.venv`. Use an absolute path without whitespaces.)
+
+Python commands
+
+* Jupyter for the examples: `jupyter lab`
+* Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `python -W ignore -m unittest discover`
-* Remove `.pyc` files: `find . -type f -name "*.pyc" | xargs rm`
-* Remove `__pycache__` folders: `find . -type d -name "__pycache__" | xargs rm -rf`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
 
+Clean up 
+
+```
+find . -type f -name "*.pyc" | xargs rm
+find . -type d -name "__pycache__" | xargs rm -r
+rm -r .venv
+```
 
 ## Support
 Please [open an issue](https://github.com/kmedian/binsel/issues/new) for support.
