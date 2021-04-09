@@ -1,25 +1,7 @@
-[![Build Status](https://travis-ci.org/kmedian/binsel.svg?branch=master)](https://travis-ci.org/kmedian/binsel)
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/kmedian/binsel/master?urlpath=lab)
-[![Gitpod - Code Now](https://img.shields.io/badge/Gitpod-code%20now-blue.svg?longCache=true)](https://gitpod.io#https://github.com/kmedian/binsel)
+[![PyPI version](https://badge.fury.io/py/binsel.svg)](https://badge.fury.io/py/binsel)
 
 # binsel
 Feature selection for Hard Voting classifier.
-
-
-## Table of Contents
-* [Installation](#installation)
-* [Usage](#usage)
-* [Commands](#commands)
-* [Support](#support)
-* [Contributing](#contributing)
-
-
-## Installation
-The `binsel` [git repo](http://github.com/kmedian/binsel) is available as [PyPi package](https://pypi.org/project/binsel)
-
-```
-pip install binsel
-```
 
 
 ## Usage
@@ -46,27 +28,36 @@ The algorithm works as follows
 3. Select the binary feature combination with the best OOB performance as final model.
 
 
-## Commands
-Install a virtual environment
+## Appendix
 
+### Installation
+The `binsel` [git repo](http://github.com/kmedian/binsel) is available as [PyPi package](https://pypi.org/project/binsel)
+
+```sh
+pip install binsel
 ```
-python3 -m venv .venv
+
+### Install a virtual environment
+
+```sh
+python3.6 -m venv .venv
 source .venv/bin/activate
-pip3 install --upgrade pip
-pip3 install -r requirements.txt
-pip3 install jupyterlab twine
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+pip install -r requirements-demo.txt
 ```
 
 (If your git repo is stored in a folder with whitespaces, then don't use the subfolder `.venv`. Use an absolute path without whitespaces.)
 
-Python commands
+### Python commands
 
 * Jupyter for the examples: `jupyter lab`
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `python -W ignore -m unittest discover`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
 
-Clean up 
+### Clean up 
 
 ```
 find . -type f -name "*.pyc" | xargs rm
