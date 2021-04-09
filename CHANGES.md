@@ -1,3 +1,8 @@
+# 0.2.3 / 2021-04-08
+
+  * MIT License changed to Apache 2.0
+  * sklearn class `BinSel` removed
+
 # 0.2.2 / 2019-12-01
 
   * Deprecation warning added
