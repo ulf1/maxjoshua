@@ -1,0 +1,4 @@
+# packages required to run example notebooks
+jupyterlab>=3.0.5
+threesplit>=0.1.0
+scikit-learn>=0.20.0
