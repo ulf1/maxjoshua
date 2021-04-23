@@ -1,4 +1,4 @@
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 
 from .negate_bool_features import negate_bool_features
 from .hard_voting import hard_voting

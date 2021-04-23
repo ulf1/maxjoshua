@@ -1,5 +1,4 @@
 from setuptools import setup
-import pypandoc
 
 
 def get_version(path):
@@ -15,7 +14,7 @@ def get_version(path):
 setup(name='binsel',
       version=get_version("binsel/__init__.py"),
       description='Feature selection for Hard Voting classifier',
-      long_description=pypandoc.convert('README.md', 'rst'),
+      long_description='README.rst',
       url='http://github.com/kmedian/binsel',
       author='Ulf Hamster',
       author_email='554c46@gmail.com',
@@ -26,4 +25,4 @@ setup(name='binsel',
           'korr>=0.8.2,<1'
       ],
       python_requires='>=3.6',
-      zip_safe=False)
+      zip_safe=True)

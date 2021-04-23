@@ -56,6 +56,7 @@ pip install -r requirements-demo.txt
 * Jupyter for the examples: `jupyter lab`
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `python -W ignore -m unittest discover`
+* Create README.rst: `pandoc README.md --from markdown --to rst -s -o README.rst`
 * Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
 
 ### Clean up 
