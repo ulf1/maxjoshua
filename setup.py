@@ -19,12 +19,11 @@ setup(name='binsel',
       url='http://github.com/kmedian/binsel',
       author='Ulf Hamster',
       author_email='554c46@gmail.com',
-      license='MIT',
+      license='Apache License 2.0',
       packages=['binsel'],
       install_requires=[
-          'setuptools>=40.0.0',
           'numpy>=1.14.5,<2',
           'korr>=0.8.2,<1'
       ],
       python_requires='>=3.6',
-      zip_safe=True)
+      zip_safe=False)
