@@ -1,4 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/binsel.svg)](https://badge.fury.io/py/binsel)
+[![binsel](https://snyk.io/advisor/python/binsel/badge.svg)](https://snyk.io/advisor/python/binsel)
 
 # binsel
 Feature selection for Hard Voting classifier.
