@@ -107,3 +107,4 @@ venv.bak/
 # other
 .vscode
 profile/data*
+README.rst

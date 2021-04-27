@@ -1,3 +1,8 @@
+# 0.2.4 / 2020-04-23
+
+  * Test multiple python versions
+  * Installation problems: remove pandoc from setup.py
+
 # 0.2.3 / 2021-04-08
 
   * MIT License changed to Apache 2.0

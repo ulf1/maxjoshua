@@ -1,4 +1,8 @@
 [![PyPI version](https://badge.fury.io/py/binsel.svg)](https://badge.fury.io/py/binsel)
+[![binsel](https://snyk.io/advisor/python/binsel/badge.svg)](https://snyk.io/advisor/python/binsel)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/kmedian/binsel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kmedian/binsel/context:python)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/kmedian/binsel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kmedian/binsel/alerts/)
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6ImttZWRpYW4iLCJyZXBvMSI6ImJpbnNlbCIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjI5NDUyLCJpYXQiOjE2MTk1MzQwNDF9.fUFsWvm7yC_TfC0iRBR48kAgpYAYPwYOSx2gbAFa99Y)](https://www.deepcode.ai/app/gh/kmedian/binsel/_/dashboard?utm_content=gh%2Fkmedian%2Fbinsel)
 
 # binsel
 Feature selection for Hard Voting classifier.
@@ -55,7 +59,14 @@ pip install -r requirements-demo.txt
 * Jupyter for the examples: `jupyter lab`
 * Check syntax: `flake8 --ignore=F401 --exclude=$(grep -v '^#' .gitignore | xargs | sed -e 's/ /,/g')`
 * Run Unit Tests: `python -W ignore -m unittest discover`
-* Upload to PyPi with twine: `python setup.py sdist && twine upload -r pypi dist/*`
+
+Publish
+
+```sh
+pandoc README.md --from markdown --to rst -s -o README.rst
+python setup.py sdist 
+twine upload -r pypi dist/*
+```
 
 ### Clean up 
 

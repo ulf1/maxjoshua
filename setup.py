@@ -1,5 +1,11 @@
 from setuptools import setup
-import pypandoc
+import os
+
+
+def read(fname):
+    with open(os.path.join(os.path.dirname(__file__), fname)) as fp:
+        s = fp.read()
+    return s
 
 
 def get_version(path):
@@ -15,14 +21,13 @@ def get_version(path):
 setup(name='binsel',
       version=get_version("binsel/__init__.py"),
       description='Feature selection for Hard Voting classifier',
-      long_description=pypandoc.convert('README.md', 'rst'),
+      long_description=read('README.rst'),
       url='http://github.com/kmedian/binsel',
       author='Ulf Hamster',
       author_email='554c46@gmail.com',
-      license='MIT',
+      license='Apache License 2.0',
       packages=['binsel'],
       install_requires=[
-          'setuptools>=40.0.0',
           'numpy>=1.14.5,<2',
           'korr>=0.8.2,<1'
       ],
