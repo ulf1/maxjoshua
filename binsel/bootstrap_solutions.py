@@ -10,11 +10,12 @@ def bootstrap_solutions_all(X: np.array,
                             replace: bool = False,
                             random_state: int = 42,
                             unique: bool = True,
-                            verbose: bool = False) -> (np.array, list):
+                            verbose: bool = False,
+                            corr_fn=mcc) -> (np.array, list):
     # compute all Matthew's correlations between (Xi,Xj)
     rho3, _, oob = bootcorr(X, n_draws=n_draws, subsample=subsample,
                             replace=replace, random_state=random_state,
-                            corr_fn=mcc)
+                            corr_fn=corr_fn)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
@@ -42,7 +43,8 @@ def bootstrap_solutions_pre(X: np.array,
                             replace: bool = False,
                             random_state: int = 42,
                             unique: bool = True,
-                            verbose: bool = False) -> (np.array, list):
+                            verbose: bool = False,
+                            corr_fn=mcc) -> (np.array, list):
     # convert to number of features to preselect
     n_features = len(X[0])
     if isinstance(preselect, float):
@@ -55,7 +57,7 @@ def bootstrap_solutions_pre(X: np.array,
     # compute all Matthew's correlations between (y,X) and (Xi,Xj)
     rho3, _, oob = bootcorr(np.c_[y, X], n_draws=n_draws, subsample=subsample,
                             replace=replace, random_state=random_state,
-                            corr_fn=mcc)
+                            corr_fn=corr_fn)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
@@ -92,14 +94,17 @@ def bootstrap_solutions(X: np.array,
                         replace: bool = False,
                         random_state: int = 42,
                         unique: bool = True,
-                        verbose: bool = False) -> (np.array, list):
+                        verbose: bool = False,
+                        corr_fn=mcc) -> (np.array, list):
     if preselect and y is not None:
         return bootstrap_solutions_pre(
             X, y, n_select=n_select, max_rho=max_rho, preselect=preselect,
             n_draws=n_draws, subsample=subsample, replace=replace,
-            random_state=random_state, unique=unique, verbose=verbose)
+            random_state=random_state, unique=unique, verbose=verbose,
+            corr_fn=corr_fn)
     else:
         return bootstrap_solutions_all(
             X, n_select=n_select, max_rho=max_rho,
             n_draws=n_draws, subsample=subsample, replace=replace,
-            random_state=random_state, unique=unique, verbose=verbose)
+            random_state=random_state, unique=unique, verbose=verbose,
+            corr_fn=corr_fn)
