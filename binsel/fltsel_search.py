@@ -1,6 +1,6 @@
 from .bootstrap_solutions import bootstrap_solutions
 import numpy as np
-from korr import pearson  #confusion, confusion_to_mcc
+from korr import pearson
 
 
 # https://github.com/ulf1/numpy-linreg/blob/main/numpy_linreg/ridge.py
@@ -8,6 +8,7 @@ def ridge_lu(y, X, lam=0.01):
     n_vars = X.shape[1]
     P = np.dot(X.T, X) + lam * np.eye(n_vars)
     return np.linalg.solve(P, np.dot(X.T, y))
+
 
 # https://github.com/ulf1/numpy-linreg/blob/main/numpy_linreg/metrics.py
 def mse(y, X, beta):
