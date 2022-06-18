@@ -45,12 +45,12 @@ def fltsel(X: np.array,
         # compute RMSE loss
         loss = mse(y=y[oob_rows], X=X[:, feat_cols][oob_rows, :], beta=beta)
         # save it
-        results.append([tuple(indicies), loss])
+        results.append([tuple(indicies), beta.tolist(), loss])
 
     # order results
     idx_sorted = np.argsort([r[-1] for r in results])
     results = [results[i] for i in idx_sorted]
 
     # done
-    idx, rho = results[0]
-    return idx, rho, results
+    idx, beta, loss = results[0]
+    return idx, beta, loss, results
