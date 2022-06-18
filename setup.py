@@ -18,15 +18,18 @@ def get_version(path):
     raise RuntimeError("Unable to find version string.")
 
 
-setup(name='binsel',
-      version=get_version("binsel/__init__.py"),
-      description='Feature selection for Hard Voting classifier',
+setup(name='maxjoshua',
+      version=get_version("maxjoshua/__init__.py"),
+      description=(
+          "Feature selection for hard voting classifier and "
+          "NN sparse weight initialization."
+      ),
       long_description=read('README.rst'),
-      url='http://github.com/kmedian/binsel',
+      url='http://github.com/ulf1/maxjoshua',
       author='Ulf Hamster',
       author_email='554c46@gmail.com',
       license='Apache License 2.0',
-      packages=['binsel'],
+      packages=['maxjoshua'],
       install_requires=[
           'numpy>=1.14.5,<2',
           'korr>=0.8.2,<1'

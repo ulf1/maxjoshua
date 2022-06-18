@@ -1,5 +1,5 @@
 import unittest
-from binsel import hard_voting
+from maxjoshua import hard_voting
 import numpy as np
 import numpy.testing as npt
 

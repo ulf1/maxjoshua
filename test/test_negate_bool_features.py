@@ -1,5 +1,5 @@
 import unittest
-from binsel import negate_bool_features
+from maxjoshua import negate_bool_features
 import numpy as np
 import numpy.testing as npt
 

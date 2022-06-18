@@ -1,13 +1,16 @@
 [![PyPI version](https://badge.fury.io/py/binsel.svg)](https://badge.fury.io/py/binsel)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/kmedian/binsel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kmedian/binsel/context:python)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/kmedian/binsel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kmedian/binsel/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/ulf1/maxjoshua.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ulf1/maxjoshua/context:python)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ulf1/maxjoshua.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ulf1/maxjoshua/alerts/)
 
-# binsel
-Feature selection for Hard Voting classifier.
+# maxjoshua
+Feature selection for hard voting classifier and NN sparse weight initialization.
+
+## Preface
+I am naming this software package in memory of my late nephew Max Joshua Hamster (* 2005 to † June 18, 2022).
 
 
 ## Usage
-Check the [`binsel_hardvote` example](https://github.com/kmedian/binsel/blob/master/examples/binsel_hardvote.ipynb) folder for notebooks.
+Check the [`binsel_hardvote` example](https://github.com/ulf1/maxjoshua/blob/master/examples/binsel_hardvote.ipynb) folder for notebooks.
 
 
 ## Algorithm
@@ -33,10 +36,10 @@ The algorithm works as follows
 ## Appendix
 
 ### Installation
-The `binsel` [git repo](http://github.com/kmedian/binsel) is available as [PyPi package](https://pypi.org/project/binsel)
+The `maxjoshua` [git repo](http://github.com/ulf1/maxjoshua) is available as [PyPi package](https://pypi.org/project/maxjoshua)
 
 ```sh
-pip install binsel
+pip install maxjoshua
 ```
 
 ### Install a virtual environment
@@ -75,8 +78,8 @@ rm -r .venv
 ```
 
 ## Support
-Please [open an issue](https://github.com/kmedian/binsel/issues/new) for support.
+Please [open an issue](https://github.com/ulf1/maxjoshua/issues/new) for support.
 
 
 ## Contributing
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/kmedian/binsel/compare/).
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/ulf1/maxjoshua/compare/).
