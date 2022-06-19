@@ -1,18 +1,13 @@
 from .bootstrap_solutions import bootstrap_solutions
 import numpy as np
-from korr import pearson
+import numba
+import numpy_linreg.ridge
+import numpy_linreg.metrics
 
 
-# https://github.com/ulf1/numpy-linreg/blob/main/numpy_linreg/ridge.py
-def ridge_lu(y, X, lam=0.01):
-    n_vars = X.shape[1]
-    P = np.dot(X.T, X) + lam * np.eye(n_vars)
-    return np.linalg.solve(P, np.dot(X.T, y))
-
-
-# https://github.com/ulf1/numpy-linreg/blob/main/numpy_linreg/metrics.py
-def mse(y, X, beta):
-    return np.mean((y - np.dot(X, beta))**2)
+@numba.njit
+def numba_corrcoef_pearson(x):
+    return np.corrcoef(x, rowvar=False)
 
 
 def fltsel(X: np.array,
@@ -26,14 +21,21 @@ def fltsel(X: np.array,
            random_state: int = 42,
            unique: bool = True,
            oob_score: bool = True,
-           verbose: bool = False) -> (list, list, float, list):
+           verbose: bool = False,
+           l2: float = 0.01) -> (list, list, float, list):
     # bootstrap some possible solutions
     solutions, oob = bootstrap_solutions(
-        X, y=y, n_select=n_select, max_rho=max_rho,
-        preselect=preselect, n_draws=n_draws,
-        subsample=subsample, replace=replace,
-        random_state=random_state, unique=unique,
-        verbose=verbose, corr_fn=pearson)
+        X, y=y,
+        n_select=n_select,
+        max_rho=max_rho,
+        preselect=preselect,
+        n_draws=n_draws,
+        subsample=subsample,
+        replace=replace,
+        random_state=random_state,
+        unique=unique,
+        verbose=verbose,
+        corr_fn=numba_corrcoef_pearson)
 
     # find best way to negate features and store evaluation
     results = []
@@ -41,9 +43,11 @@ def fltsel(X: np.array,
         feat_cols = solutions[i]
         oob_rows = oob[i]
         # fit model
-        beta = ridge_lu(y=y[oob_rows], X=X[:, feat_cols][oob_rows, :])
+        beta = numpy_linreg.ridge.lu(
+            y=y[oob_rows], X=X[:, feat_cols][oob_rows, :], lam=l2)
         # compute RMSE loss
-        loss = mse(y=y[oob_rows], X=X[:, feat_cols][oob_rows, :], beta=beta)
+        loss = numpy_linreg.metrics.rmse(
+            y=y[oob_rows], X=X[:, feat_cols][oob_rows, :], beta=beta)
         # save it
         results.append([tuple(indicies), beta.tolist(), loss])
 

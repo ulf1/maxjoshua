@@ -1,5 +1,6 @@
 import numpy as np
-from korr import bootcorr, mcc, mincorr
+import korr
+from .bootcorr import bootcorr
 
 
 def bootstrap_solutions_all(X: np.array,
@@ -11,16 +12,20 @@ def bootstrap_solutions_all(X: np.array,
                             random_state: int = 42,
                             unique: bool = True,
                             verbose: bool = False,
-                            corr_fn=mcc) -> (np.array, list):
+                            corr_fn=None) -> (np.array, list):
     # compute all Matthew's correlations between (Xi,Xj)
-    rho3, _, oob = bootcorr(X, n_draws=n_draws, subsample=subsample,
-                            replace=replace, random_state=random_state,
-                            corr_fn=corr_fn)
+    rho3, oob = bootcorr(
+        X,
+        corr_fn=corr_fn,
+        n_draws=n_draws,
+        subsample=subsample,
+        replace=replace,
+        random_state=random_state)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
     for cmat in rho3:
-        idxlo = mincorr(
+        idxlo = korr.mincorr(
             cmat, n_stop=n_select, max_rho=max_rho,
             verbose=verbose)
         solutions.append(sorted(idxlo))
@@ -44,7 +49,7 @@ def bootstrap_solutions_pre(X: np.array,
                             random_state: int = 42,
                             unique: bool = True,
                             verbose: bool = False,
-                            corr_fn=mcc) -> (np.array, list):
+                            corr_fn=None) -> (np.array, list):
     # convert to number of features to preselect
     n_features = len(X[0])
     if isinstance(preselect, float):
@@ -55,9 +60,13 @@ def bootstrap_solutions_pre(X: np.array,
         n_pre = None  # all
 
     # compute all Matthew's correlations between (y,X) and (Xi,Xj)
-    rho3, _, oob = bootcorr(np.c_[y, X], n_draws=n_draws, subsample=subsample,
-                            replace=replace, random_state=random_state,
-                            corr_fn=corr_fn)
+    rho3, oob = bootcorr(
+        np.c_[y, X],
+        corr_fn=corr_fn,
+        n_draws=n_draws,
+        subsample=subsample,
+        replace=replace,
+        random_state=random_state)
 
     # for each draw find the lowest abs(corr(Xi,Xj))
     solutions = []   # store results in list
@@ -66,7 +75,7 @@ def bootstrap_solutions_pre(X: np.array,
         idxft = np.flip(np.argsort(np.abs(cmat[0, 1:]))) + 1
         idxft = idxft[:n_pre]
         # find the smallest corr(xi,xj) between selected features
-        idxlo = mincorr(
+        idxlo = korr.mincorr(
             cmat[:, idxft][idxft, :],
             n_stop=n_select,
             max_rho=max_rho,
@@ -95,7 +104,7 @@ def bootstrap_solutions(X: np.array,
                         random_state: int = 42,
                         unique: bool = True,
                         verbose: bool = False,
-                        corr_fn=mcc) -> (np.array, list):
+                        corr_fn=None) -> (np.array, list):
     if preselect and y is not None:
         return bootstrap_solutions_pre(
             X, y, n_select=n_select, max_rho=max_rho, preselect=preselect,
