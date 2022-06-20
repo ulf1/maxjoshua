@@ -34,7 +34,10 @@ setup(name='maxjoshua',
           'numpy>=1.14.5,<2',
           'korr>=0.10.0,<1',
           'numba>=0.55.2,<1',
-          'numpy_linreg>=0.1.2,<1'
+          'numpy_linreg>=0.1.2,<1',
+          'tensorflow>=2.9.0,<3',
+          'keras-tweaks>=0.2.2,<1',
+          'scikit-learn>=0.20.0'
       ],
       python_requires='>=3.7',
       zip_safe=True)

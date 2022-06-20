@@ -8,3 +8,4 @@ from .bootstrap_solutions import (
 from .binsel import binsel
 from .fltsel import fltsel
 from .bootcorr import bootcorr
+from .sparsenn import pretrain_submodels, SparseLayerAsEnsemble

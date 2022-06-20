@@ -19,7 +19,7 @@ X = scale(load_breast_cancer().data, axis=0) > 0  # convert to binary features
 y = load_breast_cancer().target
 ```
 
-Select binary features
+Select binary features. Each row in the `results` list contains the `n_select` column indices of `X`, the notice if the binary features were negated, and the sum of absolute MCC correlation coeffcients between the selected features.
 ```py
 import maxjoshua as mh
 idx, neg, rho, results = mh.binsel(
@@ -27,31 +27,8 @@ idx, neg, rho, results = mh.binsel(
     n_select=5, unique=True, n_draws=100, random_state=42)
 ```
 
-### Forward Selection for Linear Regression
-Load toy dataset.
-```py
-from sklearn.preprocessing import scale
-from sklearn.datasets import fetch_california_housing
-housing = fetch_california_housing()
-X = scale(housing["data"], axis=0)
-y = scale(housing["target"])
-```
-
-Select features
-```py
-import maxjoshua as mh
-idx, loss, beta,  results = mh.fltsel(
-    X, y, preselect=0.8, oob_score=True, subsample=0.5, 
-    n_select=5, unique=True, n_draws=100, random_state=42)
-```
-
-
-### Initialize Sparse NN Layer
-
-
-
-## Algorithm
-The task is to select e.g. `n_select=3` features from a pool of many features.
+**Algorithm**. 
+The task is to select e.g. `n_select` features from a pool of many features.
 These features might be the prediction of binary classifiers. 
 The selected features are then combined into one hard-voting classifier.
 
@@ -65,9 +42,80 @@ The algorithm works as follows
 1. Generate multiple correlation matrices by bootstrapping. This includes `corr(X_i, X_j)` as well as `corr(Y, X_i)` computation. Also store the oob samples for evaluation.
 2. For each correlation matrix do ...
     a. Preselect the `i*` with the highest `abs(corr(Y, X_i))` estimates (e.g. pick the `n_pre=?` highest absolute correlations)
-    b. Slice a correlation matrix `corr(X_i*, X_j*)` and find the least correlated combination of `n_select=?` features. (see [`korr.mincorr`](https://github.com/kmedian/korr/blob/master/korr/mincorr.py))
+    b. Slice a correlation matrix `corr(X_i*, X_j*)` and find the least correlated combination of `n_select` features. (see [`korr.mincorr`](https://github.com/kmedian/korr/blob/master/korr/mincorr.py))
     c. Compute the out-of-bag (OOB) performance (see step 1) of the hard-voter with the selected `n_select=?` features
 3. Select the feature combination with the best OOB performance as final model.
+
+
+### Forward Selection for Linear Regression
+Load toy dataset.
+```py
+from sklearn.preprocessing import scale
+from sklearn.datasets import fetch_california_housing
+housing = fetch_california_housing()
+X = scale(housing["data"], axis=0)
+y = scale(housing["target"])
+```
+
+Select real-numbered features. Each row in the `results` list contains the `n_select` column indices of `X`, the ridge regression coefficents `beta` and the RMSE `loss`.
+Warning! Please note that the features `X` and the target `y` must be scaled because `mh.fltsel` uses an L2-penalty on `beta` coefficients, and doesn't used an intercept term to shift `y`.
+```py
+import maxjoshua as mh
+from sklearn.preprocessing import scale
+
+idx, beta, loss, results = mh.fltsel(
+    scale(X), scale(y), preselect=0.8, oob_score=True, subsample=0.5, 
+    n_select=5, unique=True, n_draws=100, random_state=42, l2=0.01)
+```
+
+
+### Initialize Sparse NN Layer
+The idea is to run `mh.fltsel` to generate an ensemble of linear models, and combine them in a sparse linear neural network layer, i.e., the number of output neurons is the ensemble size.
+In case of small datasets, the sparse NN layer is non-trainable because because each submodel was already estimated and selected with two-way data splits in `mh.fltsel` (see `oob_scores` and `subsample`). 
+The sparse NN layers basically produces submodel predictions for meta model in the next layer, i.e., a simple dense linear layer.
+The inputs of the sparse NN layer must be normalized for which a layer normalization layers is trained.
+
+```py
+import maxjoshua as mh
+import tensorflow as tf
+import sklearn.preprocessing
+
+# create toy dataset
+import sklearn.datasets
+X, y = sklearn.datasets.make_regression(
+    n_samples=1000, n_features=100, n_informative=20, n_targets=3)
+
+# feature selection
+# - always scale the inputs and targets -
+indices, values, num_in, num_out = mh.pretrain_submodels(
+    sklearn.preprocessing.scale(X), 
+    sklearn.preprocessing.scale(y), 
+    num_out=64, n_select=3)
+
+# specify the model
+model = tf.keras.models.Sequential([
+    # sub-models
+    SparseLayerAsEnsemble(
+        num_in=num_in, num_out=num_out, 
+        sp_indices=indices, sp_values=values,
+        sp_trainable=False
+    ),
+    # meta model
+    tf.keras.layers.Dense(3, use_bias=True)
+])
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(
+        learning_rate=3e-4, beta_1=.9, beta_2=.999, epsilon=1e-7, amsgrad=True),
+    loss='mean_squared_error'
+)
+
+# train
+# - scale the target -
+history = model.fit(
+    X, sklearn.preprocessing.scale(y), epochs=3)
+```
+
+
 
 
 ## Appendix
