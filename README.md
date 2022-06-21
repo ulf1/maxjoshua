@@ -95,13 +95,22 @@ indices, values, num_in, num_out = mh.pretrain_submodels(
 # specify the model
 model = tf.keras.models.Sequential([
     # sub-models
-    SparseLayerAsEnsemble(
+    mh.SparseLayerAsEnsemble(
         num_in=num_in, num_out=num_out, 
         sp_indices=indices, sp_values=values,
         sp_trainable=False
     ),
     # meta model
-    tf.keras.layers.Dense(3, use_bias=True)
+    tf.keras.layers.Dense(
+        units=3, use_bias=False,
+        kernel_constraint=tf.keras.constraints.NonNeg()
+    ),
+    # scale up
+    mh.InverseTransformer(
+        units=3,
+        init_bias=y.mean(), 
+        init_scale=y.std()
+    )
 ])
 model.compile(
     optimizer=tf.keras.optimizers.Adam(
@@ -110,9 +119,7 @@ model.compile(
 )
 
 # train
-# - scale the target -
-history = model.fit(
-    X, sklearn.preprocessing.scale(y), epochs=3)
+history = model.fit(X, y, epochs=3)
 ```
 
 

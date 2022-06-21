@@ -1,4 +1,4 @@
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 
 from .negate_bool_features import negate_bool_features
 from .hard_voting import hard_voting
@@ -8,4 +8,5 @@ from .bootstrap_solutions import (
 from .binsel import binsel
 from .fltsel import fltsel
 from .bootcorr import bootcorr
-from .sparsenn import pretrain_submodels, SparseLayerAsEnsemble
+from .sparsenn import (
+    pretrain_submodels, SparseLayerAsEnsemble, InverseTransformer)

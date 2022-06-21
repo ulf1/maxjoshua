@@ -96,7 +96,7 @@ class SparseLayerAsEnsemble(tf.keras.layers.Layer):
         # layernorm
         self.norm = tf.keras.layers.BatchNormalization(
             center=True, scale=True, trainable=True,
-            name="normalize")
+            name="normalize_inputs")
         # sparse tensor
         self.num_in = num_in
         self.num_out = num_out
@@ -117,3 +117,18 @@ class SparseLayerAsEnsemble(tf.keras.layers.Layer):
         W = self._get_sp()
         h = dense_sparse_matmul(h, W)
         return h
+
+
+class InverseTransformer(tf.keras.layers.Lambda):
+    """ Train the inverse transform """
+    def __init__(self, units, init_bias=0., init_scale=1.):
+        self.units = units
+        self.scale = tf.Variable(
+            initial_value=tf.ones(self.units) * init_scale,
+            trainable=True, name='scale')
+        self.bias = tf.Variable(
+            initial_value=tf.zeros(self.units) + init_bias,
+            trainable=True, name='bias')
+        super(InverseTransformer, self).__init__(
+            lambda x: x * self.scale + self.bias
+        )
