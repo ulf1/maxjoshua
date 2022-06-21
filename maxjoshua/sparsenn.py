@@ -119,16 +119,29 @@ class SparseLayerAsEnsemble(tf.keras.layers.Layer):
         return h
 
 
-class InverseTransformer(tf.keras.layers.Lambda):
+class InverseTransformer(tf.keras.layers.Layer):
     """ Train the inverse transform """
-    def __init__(self, units, init_bias=0., init_scale=1.):
+    def __init__(self, units, init_bias=0., init_scale=1., **kwargs):
+        super(InverseTransformer, self).__init__(**kwargs)
         self.units = units
+        self.init_bias = init_bias
+        self.init_scale = init_scale
         self.scale = tf.Variable(
-            initial_value=tf.ones(self.units) * init_scale,
+            initial_value=tf.ones(self.units) * self.init_scale,
             trainable=True, name='scale')
         self.bias = tf.Variable(
-            initial_value=tf.zeros(self.units) + init_bias,
+            initial_value=tf.zeros(self.units) + self.init_bias,
             trainable=True, name='bias')
-        super(InverseTransformer, self).__init__(
-            lambda x: x * self.scale + self.bias
-        )
+        self.ops = tf.keras.layers.Lambda(
+            lambda x: x * tf.maximum(self.scale, 1e-8) + self.bias)
+
+    def call(self, inputs):
+        return self.ops(inputs)
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'units': self.units,
+            'init_bias': self.init_bias,
+            'init_scale': self.init_scale})
+        return config
