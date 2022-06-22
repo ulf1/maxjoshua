@@ -91,12 +91,15 @@ class SparseLayerAsEnsemble(tf.keras.layers.Layer):
                  sp_indices: List[List[int]],
                  sp_values: List[float],
                  sp_trainable: bool = False,
+                 norm_trainable: bool = True,
                  **kwargs):
         super(SparseLayerAsEnsemble, self).__init__(**kwargs)
-        # layernorm
-        self.norm = tf.keras.layers.BatchNormalization(
-            center=True, scale=True, trainable=True,
-            name="normalize_inputs")
+        # batch norm
+        self.norm_trainable = norm_trainable
+        if self.norm_trainable:
+            self.norm = tf.keras.layers.BatchNormalization(
+                center=True, scale=True, trainable=True,
+                name="normalize_inputs")
         # sparse tensor
         self.num_in = num_in
         self.num_out = num_out
@@ -113,7 +116,10 @@ class SparseLayerAsEnsemble(tf.keras.layers.Layer):
             values=self.sp_weights)
 
     def call(self, inputs: tf.Tensor):
-        h = self.norm(inputs)
+        if self.norm_trainable:
+            h = self.norm(inputs)
+        else:
+            h = inputs
         W = self._get_sp()
         h = dense_sparse_matmul(h, W)
         return h

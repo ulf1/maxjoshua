@@ -96,14 +96,17 @@ indices, values, num_in, num_out = mh.pretrain_submodels(
 model = tf.keras.models.Sequential([
     # sub-models
     mh.SparseLayerAsEnsemble(
-        num_in=num_in, num_out=num_out, 
-        sp_indices=indices, sp_values=values,
-        sp_trainable=False
+        num_in=num_in, 
+        num_out=num_out, 
+        sp_indices=indices, 
+        sp_values=values,
+        sp_trainable=False,
+        norm_trainable=True,
     ),
     # meta model
     tf.keras.layers.Dense(
         units=3, use_bias=False,
-        kernel_constraint=tf.keras.constraints.NonNeg()
+        # kernel_constraint=tf.keras.constraints.NonNeg()
     ),
     # scale up
     mh.InverseTransformer(
